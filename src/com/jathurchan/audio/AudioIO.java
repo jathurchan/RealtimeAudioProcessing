@@ -51,6 +51,17 @@ public class AudioIO {
     }
 
 
+    // ---- Method to START the Audio Processing ----
+    void startAudioProcessing(String inputMixer, String outputMixer, int sampleRate, int frameSize){
+
+    }
+
+
+    // ---- Method to STOP the Audio Processing ----
+    void stopAudioProcessing(){
+
+    }
+
     // ---- For testing ----
     public static void main(String args[]) {
 
