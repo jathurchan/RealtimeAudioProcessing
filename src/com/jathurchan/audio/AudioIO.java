@@ -51,6 +51,47 @@ public class AudioIO {
     }
 
 
+    // ---- For testing ----
+    public static void main(String args[]) {
+
+        // Get the list of mixers
+        printAudioMixers();
+
+        /*
+        Got on my computer:
+        Mixers:
+            - name="Port shaki’s headphone hihi ð" description="shaki’s headphone hihi ð by Apple Inc."
+            - name="Port shaki’s headphone hihi ð" description="shaki’s headphone hihi ð by Apple Inc."
+            - name="Port MacBook Air Microphone" description="MacBook Air Microphone by Apple Inc."
+            - name="Port MacBook Air Speakers" description="MacBook Air Speakers by Apple Inc."
+            - name="Default Audio Device" description="Direct Audio Device: Default Audio Device by Unknown Vendor"
+            - name="shaki’s headphone hihi ð" description="Direct Audio Device: shaki’s headphone hihi ð by Apple Inc."
+            - name="shaki’s headphone hihi ð" description="Direct Audio Device: shaki’s headphone hihi ð by Apple Inc."
+            - name="MacBook Air Microphone" description="Direct Audio Device: MacBook Air Microphone by Apple Inc."
+            - name="MacBook Air Speakers" description="Direct Audio Device: MacBook Air Speakers by Apple Inc."
+
+         */
+        try {
+            TargetDataLine tLine = obtainAudioInput("MacBook Air Microphone", 8000);
+            SourceDataLine sLine = obtainAudioOutput("MacBook Air Speakers", 8000);
+
+            tLine.open();
+            tLine.start();
+
+            AudioSignal myAudio = new AudioSignal(32000);
+            myAudio.recordFrom(tLine);
+
+            sLine.open();
+            sLine.start();
+
+            myAudio.playTo(sLine);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
 
 
