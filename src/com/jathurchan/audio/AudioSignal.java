@@ -1,23 +1,62 @@
 package com.jathurchan.audio;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.SourceDataLine;
-import javax.sound.sampled.TargetDataLine;
+import javax.sound.sampled.*;
+
 
 public class AudioSignal {
 
-    private double[] sampleBuffer;  // floating point representation of audio samples
-    private double dBlevel; // current signal level
 
+    // ---- Variables ----
+
+    private double[] sampleBuffer;  // floating point representation of audio sample
+    private double dBLevel; // signal level in dB
     private int frameSize;
 
-    public AudioSignal(int frameSize) {
+
+    // ---- Constructor ----
+
+    public AudioSignal(int frameSize) {     // Chose to define frameSize as an integer
+        sampleBuffer = new double[frameSize];
         this.frameSize = frameSize;
     }
 
+
+    // ---- Getter & Setter Methods ----
+
+    public double getSample(int i) {
+        return sampleBuffer[i];
+    }
+
+    public void setSample(int i, double value)  {
+        sampleBuffer[i] = value;
+    }
+
+    public double getdBlevel()  {
+        return dBLevel;
+    }
+
+    public int getFrameSize()   {
+        return frameSize;
+    }
+
+    // ---- Important methods ----
+
     public void setFrom(AudioSignal other) {
 
+        // Check whether the other AudioSignal has a length higher than the one of this signal
+        if(other.getFrameSize() >= this.frameSize) {
+
+            // Update the sampleBuffer
+            for (int i=0; i<this.frameSize; i++) {
+                this.sampleBuffer[i] = other.getSample(i);
+            }
+
+            // Update the dbLevel
+            this.dBLevel = other.getdBlevel();
+
+        } else {
+            System.out.println("setFrom: the length of the other signal is not enough");
+        }
     }
 
     public boolean recordFrom(TargetDataLine audioInput) {
@@ -27,65 +66,44 @@ public class AudioSignal {
             sampleBuffer[i] = ((byteBuffer[2*i]<<8) + byteBuffer[2*i+1]) / 32768.0; // big endian
         }
 
-        // Set Signal Level in dB
-        double peakAmp = 0;
+        // -- Update Signal Level in dB --
+
+        // 1st version
+
+        /*double peakAmp = 0;
         for (double amp: sampleBuffer)  {
             if (Math.abs(amp) > peakAmp)    {
                 peakAmp = Math.abs(amp);
             }
         }
-        dBlevel = 20 * Math.log10(peakAmp);
+        dBLevel = 20 * Math.log10(peakAmp);*/
+
+        // 2nd version (discovered Methods inherited from interface javax.sound.sampled.DataLine)
+
+        dBLevel = audioInput.getLevel();
+
         return true;
     }
 
-    public boolean playTo(SourceDataLine audioOutput) {
+    public boolean playTo(SourceDataLine audioOutput) { // It is enough to invert the process in recordFrom
+        byte[] byteBuffer = new byte[sampleBuffer.length*2];    // 16 bit samples (used once again but here to store information before using write)
 
-        // Open and start the SourceDataLine
-        try {
-            AudioFormat format = new AudioFormat(8000, 8, 1, true, true);
-            TargetDataLine line = AudioSystem.getTargetDataLine(format);
-            audioOutput.open(format, sampleBuffer.length);
-            line.open(format, sampleBuffer.length);
-            line.start();
-        } catch (Exception error)   {
-            return false;
-        }
-
-        // Buffer with bytes from a sound wave
-        byte[] byteBuffer = new byte[sampleBuffer.length];
         for (int i=0; i<sampleBuffer.length; i++) {
-            byteBuffer[i] = (byte ) sampleBuffer[i];
+
+            double unscaled = sampleBuffer[i] * 32768.0;
+
+            byteBuffer[2*i] = (byte) (unscaled / 256);   // still big endian ( MSB then LSB)
+            byteBuffer[2*i+1] = (byte) (unscaled % 256); // SEE THE IMAGE playToExplanation.JPEG in images/
+
         }
 
-        // Write the buffer to the audio output
-        audioOutput.write( byteBuffer, 0, sampleBuffer.length);
-
+        if (audioOutput.write(byteBuffer, 0, byteBuffer.length) == -1) return false;
         return true;
     }
 
-
-    // Getter and Setter Methods
-
-    public double getSample(int i) {    // ---- To improve by handling out of bound errors
-        return sampleBuffer[i];
-    }
-
-    public void setSample(int i, double value)  {
-        sampleBuffer[i] = value;
-    }
-
-    public double getdBlevel()  {
-        return dBlevel;
-    }
-
-    public int getFrameSize()   {
-        return frameSize;
-    }
-
-    // public Complex[] computeFFT()
 
     public static void main(String args[])  {
 
-        //  Record a new sound
+
     }
 }
