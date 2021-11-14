@@ -106,7 +106,7 @@ public class AudioSignal {
 
         // Define the audio Format
 
-        AudioFormat format = new AudioFormat(8000, 8, 1, true, true);
+        AudioFormat format = new AudioFormat(8000, 16, 1, true, true);
 
         try {
             TargetDataLine tLine = AudioSystem.getTargetDataLine(format);
