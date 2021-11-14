@@ -104,6 +104,38 @@ public class AudioSignal {
 
     public static void main(String args[])  {
 
+        // Define the audio Format
+
+        AudioFormat format = new AudioFormat(8000, 8, 1, true, true);
+
+        try {
+            TargetDataLine tLine = AudioSystem.getTargetDataLine(format);
+            tLine.open();
+            tLine.start();
+
+            AudioSignal myAudio = new AudioSignal(32000);
+            myAudio.recordFrom(tLine);
+
+            // Print the audio signal to test
+            for (int i=0; i<myAudio.getFrameSize(); i++){
+                System.out.print(myAudio.getSample(i));
+                System.out.print(" ");
+            }
+            System.out.println("");
+
+            SourceDataLine sLine = AudioSystem.getSourceDataLine(format);
+            sLine.open();
+            sLine.start();
+
+            myAudio.playTo(sLine);
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 }
