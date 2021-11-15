@@ -39,7 +39,7 @@ public class Main extends Application {
         tb.getItems().add(cbAudIn);
 
         // Audio out
-        Label lAudOut = new Label("Audio in: ");
+        Label lAudOut = new Label("Audio out: ");
         tb.getItems().add(lAudOut);
         ComboBox<String> cbAudOut = new ComboBox<>();
         cbAudOut.getItems().addAll("Item 1", "Item 2", "Item 3");
@@ -82,10 +82,15 @@ public class Main extends Application {
         tb.getItems().add(computeButton);
         computeButton.setOnAction(event -> System.out.println("Start!"));
 
+        // Terminate
+        Button termButton = new Button("Terminate");
+        tb.getItems().add(termButton);
+        computeButton.setOnAction(event -> System.out.println("Terminated!"));
+
 
         return tb;
     }
-    private Node createStatusbar(){
+    private Node createStatusbar(){ // Show the status (Audio started / stopped)
         HBox statusbar = new HBox();
         statusbar.getChildren().addAll(new Label("Name:"), new TextField("    "));
         return statusbar;
