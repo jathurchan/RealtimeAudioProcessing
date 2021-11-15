@@ -2,6 +2,7 @@ package com.jathurchan.audio;
 
 
 import javax.sound.sampled.*;
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.Arrays;
 
 
@@ -20,6 +21,20 @@ public class AudioIO {
     public static Mixer.Info getMixerInfo(String mixerName) {   // Get the Mixer.Info whose name matches the given string
         return Arrays.stream(AudioSystem.getMixerInfo())
                 .filter(e -> e.getName().equalsIgnoreCase(mixerName)).findFirst().get();
+    }
+
+    public static String[] getAudioMixersNames() {  // Get a list : names of available mixers (FOR THE UI)
+
+        Mixer.Info[] mixers = AudioSystem.getMixerInfo();
+
+        String[] mixersNames = new String[mixers.length];
+
+        for (int i=0; i<mixers.length; i++) {
+            mixersNames[i] = mixers[i].getName();
+        }
+
+        return mixersNames;
+
     }
 
 
@@ -113,6 +128,11 @@ public class AudioIO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // To test getAudioMixersNames
+        /*String[] arr = getAudioMixersNames();
+        Arrays.stream(arr)
+                .forEach( e -> System.out.println(e));*/
 
     }
 

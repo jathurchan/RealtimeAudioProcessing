@@ -1,5 +1,7 @@
 package com.jathurchan.ui;
 
+import com.jathurchan.audio.AudioIO;
+import com.jathurchan.audio.AudioProcessor;
 import javafx.application.Application;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.layout.BorderPane;
@@ -16,6 +18,7 @@ public class Main extends Application {
 
     // ---- Variables ----
     SignalView sigView = new SignalView(new NumberAxis(), new NumberAxis());
+    String inputMixer, outputMixer;
 
 
 
@@ -39,19 +42,29 @@ public class Main extends Application {
 
         // -- First part --
 
+        String[] mixersNames = AudioIO.getAudioMixersNames();   // Get the mixers names available on the computer
+
         // Audio in
         Label lAudIn = new Label("Audio in: ");
         tb.getItems().add(lAudIn);
         ComboBox<String> cbAudIn = new ComboBox<>();
-        cbAudIn.getItems().addAll("Item 1", "Item 2", "Item 3");
+        cbAudIn.getItems().addAll(mixersNames);
         tb.getItems().add(cbAudIn);
+        cbAudIn.setOnAction((event) -> {    // Update the input mixer when selected (listening for the selection)
+            inputMixer = cbAudIn.getValue();
+            System.out.println(inputMixer);
+        });
 
         // Audio out
         Label lAudOut = new Label("Audio out: ");
         tb.getItems().add(lAudOut);
         ComboBox<String> cbAudOut = new ComboBox<>();
-        cbAudOut.getItems().addAll("Item 1", "Item 2", "Item 3");
+        cbAudOut.getItems().addAll(mixersNames);
         tb.getItems().add(cbAudOut);
+        cbAudOut.setOnAction((event) -> {    // Update the output mixer when selected (listening for the selection)
+            outputMixer = cbAudOut.getValue();
+            System.out.println(outputMixer);
+        });
 
 
         tb.getItems().add(new Separator()); // add a separator
