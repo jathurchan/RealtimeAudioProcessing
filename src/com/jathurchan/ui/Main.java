@@ -1,6 +1,7 @@
 package com.jathurchan.ui;
 
 import javafx.application.Application;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.Node;
@@ -11,6 +12,13 @@ import javafx.scene.control.*;
 
 
 public class Main extends Application {
+
+
+    // ---- Variables ----
+    SignalView sigView = new SignalView(new NumberAxis(), new NumberAxis());
+
+
+
     public void start(Stage primaryStage) {
         try {
             BorderPane root = new BorderPane();
@@ -90,13 +98,21 @@ public class Main extends Application {
 
         return tb;
     }
+
+
     private Node createStatusbar(){ // Show the status (Audio started / stopped)
         HBox statusbar = new HBox();
         statusbar.getChildren().addAll(new Label("Name:"), new TextField("    "));
         return statusbar;
     }
+
+
     private Node createMainContent(){
         Group g = new Group();
-        // ici en utilisant g.getChildren().add(...) vous pouvez ajouter tout  ́el ́ement graphique souhait ́e de type Node
+
+        g.getChildren().add(sigView);   // Signal View
+
         return g;
-    } }
+    }
+
+}
