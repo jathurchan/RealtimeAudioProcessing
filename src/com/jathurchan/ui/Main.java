@@ -25,12 +25,64 @@ public class Main extends Application {
     }
 
     private Node createToolbar(){
-        Button button = new Button("appuyez !");
-        ToolBar tb = new ToolBar(button, new Label("ceci est un label"), new Separator());
-        button.setOnAction(event -> System.out.println("appui!"));
-        ComboBox<String> cb = new ComboBox<>();
-        cb.getItems().addAll("Item 1", "Item 2", "Item 3");
-        tb.getItems().add(cb);
+
+        // Initialization of the ToolBar
+        ToolBar tb = new ToolBar();
+
+        // -- First part --
+
+        // Audio in
+        Label lAudIn = new Label("Audio in: ");
+        tb.getItems().add(lAudIn);
+        ComboBox<String> cbAudIn = new ComboBox<>();
+        cbAudIn.getItems().addAll("Item 1", "Item 2", "Item 3");
+        tb.getItems().add(cbAudIn);
+
+        // Audio out
+        Label lAudOut = new Label("Audio in: ");
+        tb.getItems().add(lAudOut);
+        ComboBox<String> cbAudOut = new ComboBox<>();
+        cbAudOut.getItems().addAll("Item 1", "Item 2", "Item 3");
+        tb.getItems().add(cbAudOut);
+
+
+        tb.getItems().add(new Separator()); // add a separator
+
+
+        // -- 2nd part --
+
+        // Sample frequency
+        ComboBox<String> cbFreq = new ComboBox<>();
+        cbFreq.getItems().addAll("Item 1", "Item 2", "Item 3");
+        tb.getItems().add(cbFreq);
+        Label lHz = new Label(" Hz");
+        tb.getItems().add(lHz);
+
+
+        tb.getItems().add(new Separator()); // add 2 separators
+        tb.getItems().add(new Separator());
+
+
+        // -- 3rd part --
+
+        // Buffer size
+        Label lBuffS = new Label("Audio in: ");
+        tb.getItems().add(lBuffS);
+        ComboBox<String> cbBuffS = new ComboBox<>();
+        cbBuffS.getItems().addAll("Item 1", "Item 2", "Item 3");
+        tb.getItems().add(cbBuffS);
+
+        // Start
+        Button startButton = new Button("Start");
+        tb.getItems().add(startButton);
+        startButton.setOnAction(event -> System.out.println("Start!"));
+
+        // Compute FFT
+        Button computeButton = new Button("Compute FFT");
+        tb.getItems().add(computeButton);
+        computeButton.setOnAction(event -> System.out.println("Start!"));
+
+
         return tb;
     }
     private Node createStatusbar(){
