@@ -17,12 +17,21 @@ public class Main extends Application {
 
 
     // ---- Variables ----
-    SignalView sigView = new SignalView(new NumberAxis(), new NumberAxis());
-    String inputMixer, outputMixer;
-    int sampleRate;
-    int frameSize;
+
+    private SignalView sigView = new SignalView(new NumberAxis(), new NumberAxis());
+    private String inputMixerName, outputMixerName;
+    private int sampleRate;
+    private int frameSize;
+    private AudioProcessor audioProcessor;
 
 
+    // ---- Getter and Setter Methods ----
+    public AudioProcessor getAudioProcessor() {
+        return audioProcessor;
+    }
+
+
+    // ---- Other Important Methods ----
 
     public void start(Stage primaryStage) {
         try {
@@ -53,8 +62,8 @@ public class Main extends Application {
         cbAudIn.getItems().addAll(mixersNames);
         tb.getItems().add(cbAudIn);
         cbAudIn.setOnAction((event) -> {    // Update the input mixer when selected (listening for the selection)
-            inputMixer = cbAudIn.getValue();
-            System.out.println(inputMixer);
+            inputMixerName = cbAudIn.getValue();
+            System.out.println(inputMixerName);
         });
 
         // Audio out
@@ -64,8 +73,8 @@ public class Main extends Application {
         cbAudOut.getItems().addAll(mixersNames);
         tb.getItems().add(cbAudOut);
         cbAudOut.setOnAction((event) -> {    // Update the output mixer when selected (listening for the selection)
-            outputMixer = cbAudOut.getValue();
-            System.out.println(outputMixer);
+            outputMixerName = cbAudOut.getValue();
+            System.out.println(outputMixerName);
         });
 
 
@@ -106,7 +115,13 @@ public class Main extends Application {
         // Start
         Button startButton = new Button("Start");
         tb.getItems().add(startButton);
-        startButton.setOnAction(event -> System.out.println("Start!"));
+        startButton.setOnAction((event) -> {
+            try {
+                audioProcessor = AudioIO.startAudioProcessing(inputMixerName, outputMixerName, sampleRate, frameSize);  // New thread created
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         // Compute FFT
         Button computeButton = new Button("Compute FFT");
@@ -116,7 +131,13 @@ public class Main extends Application {
         // Terminate
         Button termButton = new Button("Terminate");
         tb.getItems().add(termButton);
-        computeButton.setOnAction(event -> System.out.println("Terminated!"));
+        termButton.setOnAction((event) -> {
+            try {
+                AudioIO.stopAudioProcessing(audioProcessor);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
 
         return tb;

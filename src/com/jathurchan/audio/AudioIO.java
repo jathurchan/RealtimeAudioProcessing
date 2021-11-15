@@ -67,7 +67,7 @@ public class AudioIO {
 
 
     // ---- Method to START the Audio Processing ----
-    AudioProcessor startAudioProcessing(String inputMixer, String outputMixer, int sampleRate, int frameSize) throws LineUnavailableException{
+    public static AudioProcessor startAudioProcessing(String inputMixer, String outputMixer, int sampleRate, int frameSize) throws LineUnavailableException{
 
         // Obtain and Instantiate the appropriate Target/Source Datalines
         TargetDataLine audioInput = obtainAudioInput(inputMixer, sampleRate);
@@ -87,7 +87,7 @@ public class AudioIO {
 
 
     // ---- Method to STOP the Audio Processing ----
-    void stopAudioProcessing(AudioProcessor audioPro){
+    public static void stopAudioProcessing(AudioProcessor audioPro){
         audioPro.terminateAudioThread();
     }
 
