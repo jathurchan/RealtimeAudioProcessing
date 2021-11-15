@@ -35,7 +35,6 @@ public class AudioProcessor implements Runnable {
 
             outputSignal.setFrom(inputSignal);  // Simply copy from inputSignal to ouputSignal
 
-
             outputSignal.playTo(audioOutput);
         }
     }

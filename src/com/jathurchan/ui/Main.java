@@ -118,6 +118,7 @@ public class Main extends Application {
         startButton.setOnAction((event) -> {
             try {
                 audioProcessor = AudioIO.startAudioProcessing(inputMixerName, outputMixerName, sampleRate, frameSize);  // New thread created
+                sigView.updateData(audioProcessor.getOutputSignal());
             } catch (Exception e) {
                 e.printStackTrace();
             }
