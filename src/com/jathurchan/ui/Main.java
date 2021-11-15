@@ -19,6 +19,8 @@ public class Main extends Application {
     // ---- Variables ----
     SignalView sigView = new SignalView(new NumberAxis(), new NumberAxis());
     String inputMixer, outputMixer;
+    int sampleRate;
+    int frameSize;
 
 
 
@@ -73,11 +75,15 @@ public class Main extends Application {
         // -- 2nd part --
 
         // Sample frequency
-        ComboBox<String> cbFreq = new ComboBox<>();
-        cbFreq.getItems().addAll("Item 1", "Item 2", "Item 3");
+        ComboBox<Integer> cbFreq = new ComboBox<>();
+        cbFreq.getItems().addAll(48000, 44100, 8000);
         tb.getItems().add(cbFreq);
         Label lHz = new Label(" Hz");
         tb.getItems().add(lHz);
+        cbFreq.setOnAction((event) -> {    // Update the sample rate when selected (listening for the selection)
+            sampleRate = cbFreq.getValue();
+            System.out.println(sampleRate);
+        });
 
 
         tb.getItems().add(new Separator()); // add 2 separators
@@ -87,11 +93,15 @@ public class Main extends Application {
         // -- 3rd part --
 
         // Buffer size
-        Label lBuffS = new Label("Audio in: ");
+        Label lBuffS = new Label("Buffer size: ");
         tb.getItems().add(lBuffS);
-        ComboBox<String> cbBuffS = new ComboBox<>();
-        cbBuffS.getItems().addAll("Item 1", "Item 2", "Item 3");
+        ComboBox<Integer> cbBuffS = new ComboBox<>();
+        cbBuffS.getItems().addAll( 32000, 16000, 8000, 1024, 512);
         tb.getItems().add(cbBuffS);
+        cbBuffS.setOnAction((event) -> {    // Update the frame size when selected (listening for the selection)
+            frameSize = cbBuffS.getValue();
+            System.out.println(frameSize);
+        });
 
         // Start
         Button startButton = new Button("Start");
