@@ -1,4 +1,11 @@
 package com.jathurchan.ui;
 
-public class VuMeter {
+import java.awt.*;
+
+public class VuMeter extends Canvas {
+
+    public VuMeter() {
+        super(250, 250);
+    }
+
 }

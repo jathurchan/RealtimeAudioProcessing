@@ -19,6 +19,7 @@ public class Main extends Application {
     // ---- Variables ----
 
     private SignalView sigView = new SignalView(new NumberAxis(), new NumberAxis());
+    private VuMeter vuMeter = new VuMeter();
     private String inputMixerName, outputMixerName;
     private int sampleRate;
     private int frameSize;
@@ -156,6 +157,7 @@ public class Main extends Application {
         Group g = new Group();
 
         g.getChildren().add(sigView);   // Signal View
+        g.getChildren().add(vuMeter);   // VuMeter
 
         return g;
     }
