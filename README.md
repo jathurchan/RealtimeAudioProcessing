@@ -12,7 +12,7 @@ Built an application that can record from a microphone in real time, display the
 
 ### Explanation (how I converted from Bytes to double and vice-versa)
 
-![Image](https://res.craft.do/user/full/220382df-dd92-deed-f543-c34c29908bbc/doc/67CA2D04-3732-4BB0-B3D9-EDB6B08B6FE4/DB70330F-2DC5-4025-AE24-F012F97C7226_2/Image)
+![Image](images/playToExplanation.jpeg)
 
 ## Structure of the Project
 
